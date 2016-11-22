@@ -1,5 +1,6 @@
 module.exports = {
   title: 'Form radio group',
+  arguments: ['id', 'name', 'legend', 'hint', 'error', 'radioGroup'],
   context: {
     id: 'contact',
     name: 'contact-group',
