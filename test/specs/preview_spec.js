@@ -21,7 +21,13 @@ describe('Copy assets to public and run the app...', function () {
       })
     })
   })
-
+  describe('check components are available', function () {
+    it('should find components in app/components', function () {
+      assert.doesNotThrow(function () {
+        fs.accessSync(path.resolve(__dirname, '../../app/components/button.html.nunjucks'))
+      })
+    })
+  })
   describe('the index page', function () {
     it('should return a 200 on a get to "/"', function (done) {
       request(app)
