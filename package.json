@@ -15,6 +15,7 @@
   "devDependencies": {
     "browser-sync": "^2.18.1",
     "chai": "^3.5.0",
+    "dedent-js": "^1.0.1",
     "del": "^2.2.2",
     "event-stream": "^3.3.4",
     "express": "^4.14.0",
