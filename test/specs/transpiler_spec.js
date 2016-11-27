@@ -2,6 +2,7 @@ const expect = require('chai').expect
 const File = require('vinyl')
 const transpiler = require('../../lib/transpilation/transpiler.js')
 const nunjucks = require('nunjucks')
+var fs = require('fs')
 
 const transpilationTest = function (transpiler, originalString, expectedString, callback) {
   let inputFile = new File({contents: new Buffer(originalString)})
@@ -122,6 +123,34 @@ describe('Transpilation', function () {
     it('should have a correct block_for', function (done) {
       const djangoBlockFor = `{% block top_of_page %}{% endblock %}`
       transpilationTest(djangoTranspiler, nunjucksBlockFor, djangoBlockFor, done)
+    })
+  })
+
+  describe('Component transpilation equivalence', function () {
+    const components = require('../../app/data')
+
+    Object.keys(components).map(name => {
+      const component = components[name]
+      const sourcePath = `app/components/${name}.html.nunjucks`
+      const expected = nunjucks.render(sourcePath, component.context)
+
+      describe('into Nunjucks', function () {
+        it(`${name} should have the same output after transpile`, function () {
+          // Duplicated from the transpiler
+          // @TODO should it be shared, or should the test be independant?
+          const kebabToCamel = string => {
+            return string.replace(/-([a-z])/g, function (m, w) {
+              return w.toUpperCase()
+            })
+          }
+
+          let transpiledTemplate = transpiler.transpileComponentSync('nunjucks', name, fs.readFileSync(sourcePath).toString())
+          let invocation = `{{ ${kebabToCamel(name)}(${component.arguments.join(', ')}) }}`
+          let output = nunjucks.renderString(transpiledTemplate + invocation, component.context)
+          // Trim leading/trailing whistespace, macro def results in new lines
+          expect(output.trim()).to.equal(expected.trim())
+        })
+      })
     })
   })
 })
