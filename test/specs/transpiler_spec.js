@@ -1,6 +1,7 @@
 const expect = require('chai').expect
 const File = require('vinyl')
 const transpiler = require('../../lib/transpilation/transpiler.js')
+const nunjucks = require('nunjucks')
 
 const transpilationTest = function (transpiler, originalString, expectedString, callback) {
   let inputFile = new File({contents: new Buffer(originalString)})
@@ -19,7 +20,7 @@ const nunjucksBlockFor = `{% block top_of_page %}{% endblock %}`
 describe('Transpilation', function () {
   it('should return a Buffer', function (done) {
     let inputFile = new File({contents: new Buffer('test')})
-    let testTranspiler = transpiler('erb', nunjucksAssetVersion)
+    let testTranspiler = transpiler.transpileTemplate('erb', nunjucksAssetVersion)
     testTranspiler.write(inputFile)
     testTranspiler.once('data', function (file) {
       expect(file.isBuffer()).to.equal(true)
@@ -31,7 +32,7 @@ describe('Transpilation', function () {
     let nunjucksTranspiler
 
     beforeEach(function () {
-      nunjucksTranspiler = transpiler('nunjucks', nunjucksAssetVersion)
+      nunjucksTranspiler = transpiler.transpileTemplate('nunjucks', nunjucksAssetVersion)
     })
 
     it('should have a correct asset_path', function (done) {
@@ -50,7 +51,7 @@ describe('Transpilation', function () {
     let erbTranspiler
 
     beforeEach(function () {
-      erbTranspiler = transpiler('erb', nunjucksAssetVersion)
+      erbTranspiler = transpiler.transpileTemplate('erb', nunjucksAssetVersion)
     })
 
     it('should have a correct asset_path for stylesheets', function (done) {
@@ -86,7 +87,7 @@ describe('Transpilation', function () {
     let handlebarsTranspiler
 
     beforeEach(function () {
-      handlebarsTranspiler = transpiler('handlebars', nunjucksAssetVersion)
+      handlebarsTranspiler = transpiler.transpileTemplate('handlebars', nunjucksAssetVersion)
     })
 
     it('should have a correct asset_path', function (done) {
@@ -107,7 +108,7 @@ describe('Transpilation', function () {
     let djangoTranspiler
 
     beforeEach(function () {
-      djangoTranspiler = transpiler('django', nunjucksAssetVersion)
+      djangoTranspiler = transpiler.transpileTemplate('django', nunjucksAssetVersion)
     })
 
     it('should have a correct asset_path', function (done) {
