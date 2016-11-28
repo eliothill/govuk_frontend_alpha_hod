@@ -151,6 +151,25 @@ describe('Transpilation', function () {
           expect(output.trim()).to.equal(expected.trim())
         })
       })
+
+      describe('into ERB', function () {
+        it(`${name} should have the same output after transpile`, function (done) {
+          let transpiledTemplate = transpiler.transpileComponentSync('erb', name, fs.readFileSync(sourcePath).toString())
+          // @TODO: make erb.render a shell out to a ruby file that takes template from STDIN and context as JSON
+          // get exact ERB behaviour, rather than relying on something like EJS
+          const exec = require('child_process').exec
+          const args = JSON.stringify(component.context)
+          // @TODO: Proper shell escaping
+          console.log(`echo '${transpiledTemplate}' | ruby test/specs/helpers/erb.rb '${args}'`)
+          exec(`echo '${transpiledTemplate}' | ruby test/specs/helpers/erb.rb '${args}'`, (error, stdout, stderr) => {
+            if (error) {
+              throw new Error(`exec error: ${error}`)
+            }
+            expect(stdout.trim()).to.equal(expected.trim())
+            done()
+          })
+        })
+      })
     })
   })
 })
