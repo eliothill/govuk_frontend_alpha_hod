@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link media="all" rel="stylesheet" href="{{ '/stylesheets/govuk-frontend.css' | path }}">
+    <title>Preview Layout</title>
+    <style>
+      html {
+        background-color: white;
+      }
+    </style>
+</head>
+<body>
+  {{ yield }}
+</body>
+<script src="{{ '/javascripts/govuk-template.min.js' | path }}"></script>
+<script src="{{ '/javascripts/toolkit.min.js' | path }}"></script>
+<script src="{{ '/javascripts/elements.min.js' | path }}"></script>
+<script>
+  $(document).ready(function () {
+    // govuk_template sets this, we're not loading the template as a wrapper for components so set it here
+    $('body').addClass('js-enabled')
+    // Use GOV.UK selection-buttons.js to set selected
+    // and focused states for block labels
+    var $blockLabels = $(".gv-c-form-custom input[type='radio'], .gv-c-form-custom input[type='checkbox']")
+    new GOVUK.SelectionButtons($blockLabels) // eslint-disable-line
+  })
+</script>
+</html>

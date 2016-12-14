@@ -1,6 +1,7 @@
 module.exports = {
   title: 'Form radio group',
   status: 'wip',
+  preview: '@preview-form-radio-group',
   context: {
     id: 'contact',
     name: 'contact-group',
