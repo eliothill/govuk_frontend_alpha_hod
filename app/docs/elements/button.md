@@ -1,4 +1,3 @@
-<link media="all" rel="stylesheet" href="{{ '/stylesheets/govuk-frontend.css' | path }}">
 
 # Buttons
 
@@ -8,7 +7,15 @@
 
 Button text should be short and describe the action the button performs.
 
-{% render '@button' %}
+{{ '@button'|preview }}
+
+```nunj
+{% view '@button' %}
+```
+
+```json
+{% context '@button' %}
+```
 
 ### Button alignment
 
